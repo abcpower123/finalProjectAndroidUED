@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/deletemenu"
+        android:icon="@drawable/deleteicon"
+
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/insertdatemenu"
+        android:icon="@drawable/pickdateicon"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/pickcolormenu"
+        android:icon="@drawable/pickcoloricon"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/setpasswordmenu"
+        android:icon="@drawable/lockicon"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/savemenu"
+        android:icon="@drawable/saveicon"
+        android:title=""
+        app:showAsAction="always" />
+
+</menu>

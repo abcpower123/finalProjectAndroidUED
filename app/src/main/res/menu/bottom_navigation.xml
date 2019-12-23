@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_work"
+        android:icon="@drawable/ic_work_black_24dp"
+        android:title="Work" />
+
+    <item
+        android:id="@+id/nav_family"
+        android:icon="@drawable/ic_family"
+        android:title="Family" />
+
+    <item
+        android:id="@+id/nav_friend"
+        android:icon="@drawable/icfriend"
+        android:title="Friend" />
+
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_about"
+        android:title="About" />
+
+
+</menu>
