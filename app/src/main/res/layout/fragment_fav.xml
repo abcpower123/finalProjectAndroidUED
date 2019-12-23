@@ -28,7 +28,7 @@
             android:id="@+id/uncategorycontainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:animateLayoutChanges="true"
             android:background="@android:color/transparent"
             app:flexWrap="wrap">
 
@@ -60,6 +60,7 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
 

@@ -74,6 +74,7 @@ public class FavFragment extends Fragment {
                 startActivity(t);
             }
         });
+
         loadview();
         loadList();
 //        containerr.addView(UIutil.createButtonNote(R.color.note_c3,"Somebutton",getContext()));
@@ -122,6 +123,8 @@ public class FavFragment extends Fragment {
                     startActivity(t);}
                 }
             });
+            b.setTag(a.getId()+"");
+            b.setOnLongClickListener(new UIutil());
             container.addView(b);
 
         }

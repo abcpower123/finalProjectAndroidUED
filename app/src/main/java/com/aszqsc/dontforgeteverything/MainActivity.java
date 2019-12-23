@@ -3,16 +3,14 @@ package com.aszqsc.dontforgeteverything;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.animation.Animator;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.aszqsc.dontforgeteverything.fragment.FavFragment;
 import com.aszqsc.dontforgeteverything.fragment.HomeFragment;
@@ -22,6 +20,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static  View deleteZone;
     ViewPager viewPager;
     BottomNavigationView bottomNav;
 
@@ -88,7 +87,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        deleteZone =findViewById(R.id.deleteZoneLayout);
+        deleteZone.setOnDragListener(new UIutil());
 
+        deleteZone.animate()
+                .translationY(deleteZone.getHeight());
+
+        deleteZone.setVisibility(View.GONE);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -112,21 +117,60 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static void hideDeleteZone() {
+        deleteZone.animate()
+                .translationY(deleteZone.getHeight())
+                .alpha(1.0f)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        deleteZone.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+
+
+    }
+
+    public static void showDeleteZone() {
+        deleteZone.setVisibility(View.VISIBLE);
+        deleteZone.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setListener(null);
+
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void loadFragment(int position) {
         switch (position){
             case 0:
                 bottomNav.setBackground(getDrawable(R.color.note_c4));
-                workFragment.loadList();
+               // workFragment.loadList();
                 break;
 
             case 1:
                 bottomNav.setBackground(getDrawable(R.color.note_c2));
-                familyFragment.loadList();
+                //familyFragment.loadList();
                 break;
             case 2:
                 bottomNav.setBackground(getDrawable(R.color.note_c5));
-                friendsFragment.loadList();
+                //friendsFragment.loadList();
                 break;
             case 3:
                 bottomNav.setBackground(getDrawable(R.color.note_c1));
