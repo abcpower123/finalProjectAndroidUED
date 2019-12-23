@@ -1,6 +1,5 @@
 package com.aszqsc.dontforgeteverything;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
@@ -57,7 +56,7 @@ public class UIutil implements View.OnDragListener, View.OnLongClickListener {
     public boolean onLongClick(View view) {
         MainActivity.showDeleteZone();
 
-        ClipData.Item item = new ClipData.Item((CharSequence) view.getTag().toString());
+        ClipData.Item item = new ClipData.Item(view.getTag().toString());
         String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
         ClipData data = new ClipData(view.getTag().toString(), mimeTypes, item);
         View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
@@ -79,10 +78,7 @@ public class UIutil implements View.OnDragListener, View.OnLongClickListener {
         switch (action) {
             case DragEvent.ACTION_DRAG_STARTED:
                 // Determines if this View can accept the dragged data
-                if (event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
-                    return true;
-                }
-                return false;
+                return event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN);
 
             case DragEvent.ACTION_DRAG_ENTERED:
                 // Applies a YELLOW or any color tint to the View, when the dragged view entered into drag acceptable view

@@ -1,13 +1,7 @@
 package com.aszqsc.dontforgeteverything;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.Animator;
 import android.app.DatePickerDialog;
-import android.app.TaskInfo;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
@@ -19,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +23,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.aszqsc.dontforgeteverything.Notify.AlarmReceiver_SendOn;
 import com.aszqsc.dontforgeteverything.customdialog.DatePickerFragment;
@@ -52,21 +49,20 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
     CheckBox cNoti;
     Button btnSelectDate;
     Button btnSelectTime;
-    boolean show=true;
+    boolean show = true;
     Spinner spinner;
     View notidatetimelayout;
     View containerLayout;
 
-    int flagDatePicker=-1; //0: insert date; 1 : set notifyDate
+    int flagDatePicker = -1; //0: insert date; 1 : set notifyDate
 
+    //appbar menu option
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
-        // If you don't have res/menu, just create a directory named "menu" inside res
         getMenuInflater().inflate(R.menu.note_edit_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    // handle button activities
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -74,22 +70,22 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
 //        if (id == R.id.savemenu) {
 //            Log.e("button: ","clicled"+);
 //        }
-        switch (id){
+        switch (id) {
             case R.id.savemenu:
                 note.setTitle(txtTitle.getText().toString());
                 note.setContent(txtContent.getText().toString());
                 note.setNoti(cNoti.isChecked());
 
-                int day=0,month=0,year=0,hour=0,minute=0;
-                String[] date=btnSelectDate.getText().toString().split("/");
-                String[] time=btnSelectTime.getText().toString().split(":");
+                int day = 0, month = 0, year = 0, hour = 0, minute = 0;
+                String[] date = btnSelectDate.getText().toString().split("/");
+                String[] time = btnSelectTime.getText().toString().split(":");
 
-                day=Integer.parseInt(date[0].trim());
-                month=Integer.parseInt(date[1].trim());
-                year=Integer.parseInt(date[2].trim());
+                day = Integer.parseInt(date[0].trim());
+                month = Integer.parseInt(date[1].trim());
+                year = Integer.parseInt(date[2].trim());
 
-                hour=Integer.parseInt(time[0].trim());
-                minute=Integer.parseInt(time[1].trim());
+                hour = Integer.parseInt(time[0].trim());
+                minute = Integer.parseInt(time[1].trim());
 
                 note.setDay(day);
                 note.setMonth(month);
@@ -97,15 +93,15 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
                 note.setHour(hour);
                 note.setMinute(minute);
 
-                if(note.isNoti()){
-                    AlarmReceiver_SendOn.sendMess(day,month,year,hour,minute,NoteInfo.this,note.getTitle());
+                if (note.isNoti()) {
+                    AlarmReceiver_SendOn.sendMess(day, month, year, hour, minute, NoteInfo.this, note.getTitle());
                 }
-                Log.e("Datetime",day+"/"+month+"/"+year+" "+hour+":"+minute);
-                Log.e("Save",note.toString());
-                if(note.getId()==-1){
+                Log.e("Datetime", day + "/" + month + "/" + year + " " + hour + ":" + minute);
+                Log.e("Save", note.toString());
+                if (note.getId() == -1) {
                     db.addNote(note);
 
-                }else{
+                } else {
                     db.updateNote(note);
                 }
                 onBackPressed();
@@ -115,9 +111,9 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
                 onBackPressed();
                 break;
             case R.id.insertdatemenu:
-                DatePickerFragment dpf=new DatePickerFragment();
-                flagDatePicker=0;
-                dpf.show(getSupportFragmentManager(),"Date picker quick insert");
+                DatePickerFragment dpf = new DatePickerFragment();
+                flagDatePicker = 0;
+                dpf.show(getSupportFragmentManager(), "Date picker quick insert");
                 break;
             case R.id.pickcolormenu:
                 showPickColorMenuDialog();
@@ -126,42 +122,43 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
                 showPasswordDialog();
                 break;
         }
-        Log.e("button: ","clicled"+id);
+        Log.e("button: ", "clicled" + id);
         return super.onOptionsItemSelected(item);
     }
 
-       private void showPickColorMenuDialog() {
+    // handle button activities
+    private void showPickColorMenuDialog() {
         //layout
         LayoutInflater inflater = getLayoutInflater();
         View colorPickLayout = inflater.inflate(R.layout.colorpickerdialog, null);
-        final Button c1 = (Button) colorPickLayout.findViewById(R.id.c1);
-        final Button c2 = (Button) colorPickLayout.findViewById(R.id.c2);
-        final Button c3 = (Button) colorPickLayout.findViewById(R.id.c3);
-        final Button c4 = (Button) colorPickLayout.findViewById(R.id.c4);
-        final Button c5 = (Button) colorPickLayout.findViewById(R.id.c5);
-        final Button c6 = (Button) colorPickLayout.findViewById(R.id.c6);
+        final Button c1 = colorPickLayout.findViewById(R.id.c1);
+        final Button c2 = colorPickLayout.findViewById(R.id.c2);
+        final Button c3 = colorPickLayout.findViewById(R.id.c3);
+        final Button c4 = colorPickLayout.findViewById(R.id.c4);
+        final Button c5 = colorPickLayout.findViewById(R.id.c5);
+        final Button c6 = colorPickLayout.findViewById(R.id.c6);
 
-        View.OnClickListener colorpickListener=new View.OnClickListener() {
+        View.OnClickListener colorpickListener = new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                Button b= (Button) view;
+                Button b = (Button) view;
 
                 Drawable background = b.getBackground();
-                int    color = ((ColorDrawable) background).getColor();
+                int color = ((ColorDrawable) background).getColor();
 
-                if(color==getColor(R.color.note_c1))
-                    changecolor(R.color.note_c1,R.color.note_c1_light,R.color.note_c1_lightest);
-                if(color==getColor(R.color.note_c2))
-                    changecolor(R.color.note_c2,R.color.note_c2_light,R.color.note_c2_lightest);
-                if(color==getColor(R.color.note_c3))
-                    changecolor(R.color.note_c3,R.color.note_c3_light,R.color.note_c3_lightest);
-                if(color==getColor(R.color.note_c4))
-                    changecolor(R.color.note_c4,R.color.note_c4_light,R.color.note_c4_lightest);
-                if(color==getColor(R.color.note_c5))
-                    changecolor(R.color.note_c5,R.color.note_c5_light,R.color.note_c5_lightest);
-                if(color==getColor(R.color.note_c6))
-                    changecolor(R.color.note_c6,R.color.note_c6_light,R.color.note_c6_lightest);
+                if (color == getColor(R.color.note_c1))
+                    changecolor(R.color.note_c1, R.color.note_c1_light, R.color.note_c1_lightest);
+                if (color == getColor(R.color.note_c2))
+                    changecolor(R.color.note_c2, R.color.note_c2_light, R.color.note_c2_lightest);
+                if (color == getColor(R.color.note_c3))
+                    changecolor(R.color.note_c3, R.color.note_c3_light, R.color.note_c3_lightest);
+                if (color == getColor(R.color.note_c4))
+                    changecolor(R.color.note_c4, R.color.note_c4_light, R.color.note_c4_lightest);
+                if (color == getColor(R.color.note_c5))
+                    changecolor(R.color.note_c5, R.color.note_c5_light, R.color.note_c5_lightest);
+                if (color == getColor(R.color.note_c6))
+                    changecolor(R.color.note_c6, R.color.note_c6_light, R.color.note_c6_lightest);
 
             }
         };
@@ -184,11 +181,12 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
         dialog.show();
 
     }
+
     private void showPasswordDialog() {
         //layout
         LayoutInflater inflater = getLayoutInflater();
         View passwordLayout = inflater.inflate(R.layout.setpassdialog, null);
-        final EditText txtPass =  passwordLayout.findViewById(R.id.txtPassword);
+        final EditText txtPass = passwordLayout.findViewById(R.id.txtPassword);
 
         //dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -224,87 +222,84 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         db = new MyDatabaseHelper(this);
         setContentView(R.layout.activity_note_info);
+        //db
+        db = new MyDatabaseHelper(this);
+        //appbar
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor(R.color.note_c6)));
-
-        note= (Note) getIntent().getSerializableExtra("note");
-
-        txtTitle=findViewById(R.id.txtTitle);
-        txtContent=findViewById(R.id.txtContent);
-        lbDate=findViewById(R.id.lbDate);
-        lbTime=findViewById(R.id.lbTime);
-        cNoti=findViewById(R.id.chNoti);
-        btnSelectDate=findViewById(R.id.btnSelectDate);
-        btnSelectTime=findViewById(R.id.btnSelectTime);
-        notidatetimelayout=findViewById(R.id.notidatetimelayout);
-        spinner=findViewById(R.id.spinner);
-        containerLayout=findViewById(R.id.parentNoteInfoLayout);
+        //get object
+        note = (Note) getIntent().getSerializableExtra("note");
+        //find views
+        txtTitle = findViewById(R.id.txtTitle);
+        txtContent = findViewById(R.id.txtContent);
+        lbDate = findViewById(R.id.lbDate);
+        lbTime = findViewById(R.id.lbTime);
+        cNoti = findViewById(R.id.chNoti);
+        btnSelectDate = findViewById(R.id.btnSelectDate);
+        btnSelectTime = findViewById(R.id.btnSelectTime);
+        notidatetimelayout = findViewById(R.id.notidatetimelayout);
+        spinner = findViewById(R.id.spinner);
+        containerLayout = findViewById(R.id.parentNoteInfoLayout);
         cNoti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!cNoti.isChecked()){
+                if (!cNoti.isChecked()) {
                     slideDown(notidatetimelayout);
-                    //notidatetimelayout.setVisibility(View.GONE);
-                }
-                else{
+                } else {
                     slideUp(notidatetimelayout);
-                   // notidatetimelayout.setVisibility(View.VISIBLE);
                 }
             }
         });
 
         setSeletedDateTimeNotify();
-
         initSpinner();
-
-
+        //set data from the object got by intent
         txtTitle.setText(note.getTitle());
         txtContent.setText(note.getContent());
         cNoti.setChecked(note.isNoti());
-        btnSelectDate.setText(note.getDay()+"/"+note.getMonth()+"/"+note.getYear());
-        btnSelectTime.setText(note.getHour()+":"+note.getMinute());
+        btnSelectDate.setText(note.getDay() + "/" + note.getMonth() + "/" + note.getYear());
+        btnSelectTime.setText(note.getHour() + ":" + note.getMinute());
         spinner.setSelection(note.getCateID());
-        int    color = note.getColorTheme();
-        if(color==R.color.note_c1)
-            changecolor(R.color.note_c1,R.color.note_c1_light,R.color.note_c1_lightest);
-        if(color==R.color.note_c2)
-            changecolor(R.color.note_c2,R.color.note_c2_light,R.color.note_c2_lightest);
-        if(color==R.color.note_c3)
-            changecolor(R.color.note_c3,R.color.note_c3_light,R.color.note_c3_lightest);
-        if(color==R.color.note_c4)
-            changecolor(R.color.note_c4,R.color.note_c4_light,R.color.note_c4_lightest);
-        if(color==R.color.note_c5)
-            changecolor(R.color.note_c5,R.color.note_c5_light,R.color.note_c5_lightest);
-        if(color==R.color.note_c6)
-            changecolor(R.color.note_c6,R.color.note_c6_light,R.color.note_c6_lightest);
+        int color = note.getColorTheme();
+        if (color == R.color.note_c1)
+            changecolor(R.color.note_c1, R.color.note_c1_light, R.color.note_c1_lightest);
+        if (color == R.color.note_c2)
+            changecolor(R.color.note_c2, R.color.note_c2_light, R.color.note_c2_lightest);
+        if (color == R.color.note_c3)
+            changecolor(R.color.note_c3, R.color.note_c3_light, R.color.note_c3_lightest);
+        if (color == R.color.note_c4)
+            changecolor(R.color.note_c4, R.color.note_c4_light, R.color.note_c4_lightest);
+        if (color == R.color.note_c5)
+            changecolor(R.color.note_c5, R.color.note_c5_light, R.color.note_c5_lightest);
+        if (color == R.color.note_c6)
+            changecolor(R.color.note_c6, R.color.note_c6_light, R.color.note_c6_lightest);
     }
 
     private void setSeletedDateTimeNotify() {
         btnSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("Choose ","date");
-                DatePickerFragment dpf=new DatePickerFragment();
-                flagDatePicker=1;
-                dpf.show(getSupportFragmentManager(),"Date picker set notify");
+                Log.e("Choose ", "date");
+                DatePickerFragment dpf = new DatePickerFragment();
+                flagDatePicker = 1;
+                dpf.show(getSupportFragmentManager(), "Date picker set notify");
             }
         });
         btnSelectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("Choose ","time");
-                TimePickerDialogFragment tpd=new TimePickerDialogFragment();
-              tpd.show(getSupportFragmentManager(),"Set time notify");
+                Log.e("Choose ", "time");
+                TimePickerDialogFragment tpd = new TimePickerDialogFragment();
+                tpd.show(getSupportFragmentManager(), "Set time notify");
             }
         });
     }
 
 
     // slide the view from below itself to the current position
-    public void slideUp(final View view){
+    public void slideUp(final View view) {
 //
 //        TranslateAnimation animate = new TranslateAnimation(
 //                0,                 // fromXDelta
@@ -356,8 +351,9 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
         }).start();
 
     }
+
     // slide the view from its current position to below itself
-    public void slideDown(final View view){
+    public void slideDown(final View view) {
 //        TranslateAnimation animate = new TranslateAnimation(
 //                0,                 // fromXDelta
 //                0,                 // toXDelta
@@ -406,18 +402,19 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
             }
         }).start();
     }
-    void initSpinner(){
 
-        Spinner dropdown=findViewById(R.id.spinner);
-        String []items =new String[] {"Works","Family","Friend"};
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this,R.layout.spinneritemcustom,items);
+    void initSpinner() {
+
+        Spinner dropdown = findViewById(R.id.spinner);
+        String[] items = new String[]{"Works", "Family", "Friend"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinneritemcustom, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 note.setCateID(i);
-                Log.e("Seleted: ",i+"");
+                Log.e("Seleted: ", i + "");
             }
 
             @Override
@@ -432,27 +429,26 @@ public class NoteInfo extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         i1++;
-    if(flagDatePicker==0){
-        if(txtTitle.hasFocus()){
-            txtTitle.setText(txtTitle.getText().toString()+" "+i2+"/"+i1+"/"+i+" ");
-            // txtTitle.requestFocus();
-            txtTitle.setSelection(txtTitle.getText().length());
+        if (flagDatePicker == 0) {
+            if (txtTitle.hasFocus()) {
+                txtTitle.setText(txtTitle.getText().toString() + " " + i2 + "/" + i1 + "/" + i + " ");
+                // txtTitle.requestFocus();
+                txtTitle.setSelection(txtTitle.getText().length());
+            }
+            if (txtContent.hasFocus()) {
+                txtContent.setText(txtContent.getText().toString() + " " + i2 + "/" + i1 + "/" + i + " ");
+                // txtContent.requestFocus();
+                txtContent.setSelection(txtContent.getText().length());
+            }
+            Log.e("picked date: ", " " + i2 + "/" + i1 + "/" + i + " ");
+        } else {
+            btnSelectDate.setText(i2 + "/" + i1 + "/" + i + " ");
         }
-        if(txtContent.hasFocus()){
-            txtContent.setText(txtContent.getText().toString()+" "+i2+"/"+i1+"/"+i+" ");
-            // txtContent.requestFocus();
-            txtContent.setSelection(txtContent.getText().length());
-        }
-        Log.e("picked date: "," "+i2+"/"+i1+"/"+i+" ");
-    }
-    else{
-        btnSelectDate.setText(i2+"/"+i1+"/"+i+" ");
-    }
-       flagDatePicker=-1;
+        flagDatePicker = -1;
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
-        btnSelectTime.setText(i+":"+i1);
+        btnSelectTime.setText(i + ":" + i1);
     }
 }

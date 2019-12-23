@@ -3,8 +3,16 @@ package com.aszqsc.dontforgeteverything.model;
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    private  int id;
-    private  String name;
+    private int id;
+    private String name;
+
+    public Category() {
+    }
+
+    public Category(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     @Override
     public String toString() {
@@ -27,14 +35,6 @@ public class Category implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public Category() {
-    }
-
-    public Category(int id, String name) {
-        this.id = id;
         this.name = name;
     }
 }

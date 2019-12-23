@@ -31,34 +31,49 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        initDB_Fragment();
+        initViewPagerFragment();
+        initBottomNav();
+        initDeleteZone();
 
-        MyDatabaseHelper db = new MyDatabaseHelper(this);
-        homeFragment=new HomeFragment(db);
-        workFragment=new FavFragment(db,0);
-        familyFragment=new FavFragment(db,1);
-        friendsFragment=new FavFragment(db,2);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        ViewpagerAdapter viewPagerAdapter = new ViewpagerAdapter(getSupportFragmentManager());
+            @Override
+            public void onPageSelected(int position) {
+                bottomNav.getMenu().getItem(position).setChecked(true);
+                loadFragment(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
 
-        viewPagerAdapter.addFragment(workFragment);
-        viewPagerAdapter.addFragment(familyFragment);
-        viewPagerAdapter.addFragment(friendsFragment);
-        viewPagerAdapter.addFragment(homeFragment);
+    }
 
-        viewPager.setAdapter(viewPagerAdapter);
-         bottomNav = findViewById(R.id.bottom_navigation);
+    private void initDeleteZone() {
+        deleteZone =findViewById(R.id.deleteZoneLayout);
+        deleteZone.setOnDragListener(new UIutil());
+
+        deleteZone.animate()
+                .translationY(deleteZone.getHeight());
+
+        deleteZone.setVisibility(View.GONE);
+    }
+    private void initBottomNav() {
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-              //  Fragment selectedFragment = null;
+                //  Fragment selectedFragment = null;
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_work:
@@ -75,45 +90,35 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
 
-                  //      selectedFragment = new FavFragment();
+                    //      selectedFragment = new FavFragment();
 
 
                 }
 
-              //  getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                //  getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 //        selectedFragment).commit();
 
                 return true;
             }
 
         });
-        deleteZone =findViewById(R.id.deleteZoneLayout);
-        deleteZone.setOnDragListener(new UIutil());
+    }
+    private void initViewPagerFragment() {
+        viewPager = findViewById(R.id.viewpager);
+        ViewpagerAdapter viewPagerAdapter = new ViewpagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(workFragment);
+        viewPagerAdapter.addFragment(familyFragment);
+        viewPagerAdapter.addFragment(friendsFragment);
+        viewPagerAdapter.addFragment(homeFragment);
+        viewPager.setAdapter(viewPagerAdapter);
 
-        deleteZone.animate()
-                .translationY(deleteZone.getHeight());
-
-        deleteZone.setVisibility(View.GONE);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                bottomNav.getMenu().getItem(position).setChecked(true);
-                loadFragment(position);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
+    }
+    private void initDB_Fragment() {
+        MyDatabaseHelper db = new MyDatabaseHelper(this);
+        homeFragment=new HomeFragment(db);
+        workFragment=new FavFragment(db,0);
+        familyFragment=new FavFragment(db,1);
+        friendsFragment=new FavFragment(db,2);
 
     }
 
@@ -145,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
     public static void showDeleteZone() {
         deleteZone.setVisibility(View.VISIBLE);
         deleteZone.animate()
@@ -179,9 +183,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void NewTask(View view) {
-        Intent t =new Intent(this,NoteInfo.class);
-        startActivity(t);
-    }
 
 }

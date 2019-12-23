@@ -50,8 +50,6 @@ public class FavFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_fav, container, false);
     }
 
@@ -60,7 +58,6 @@ public class FavFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         bg=view.findViewById(R.id.layoutbackground);
         txtTitle=view.findViewById(R.id.txtFragmentTitle);
-
         container =view.findViewById(R.id.uncategorycontainer);
         btnadd=view.findViewById(R.id.floatingActionButton2);
         btnadd.setOnClickListener(new View.OnClickListener() {

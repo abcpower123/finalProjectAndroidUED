@@ -2,7 +2,6 @@ package com.aszqsc.dontforgeteverything.model;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -18,10 +17,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Note_Manager";
     // Tên bảng: Note.
     private static final String TABLE_NOTE = "Note";
-    private static final String COLUMN_NOTE_ID ="Note_Id";
-    private static final String COLUMN_NOTECATE_ID ="NoteCate_Id";
-    private static final String COLUMN_NOTE_COLOR ="Note_color";
-    private static final String COLUMN_NOTE_TITLE ="Note_Title";
+    private static final String COLUMN_NOTE_ID = "Note_Id";
+    private static final String COLUMN_NOTECATE_ID = "NoteCate_Id";
+    private static final String COLUMN_NOTE_COLOR = "Note_color";
+    private static final String COLUMN_NOTE_TITLE = "Note_Title";
     private static final String COLUMN_NOTE_CONTENT = "Note_Content";
     private static final String COLUMN_NOTE_IS_NOTI = "Is_notify";
     private static final String COLUMN_NOTE_YEAR = "Note_year";
@@ -33,9 +32,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     // Tên bảng: Category.
     private static final String TABLE_CATEGORY = "Category";
-    private static final String COLUMN_CATE_ID ="Cate_Id";
-    private static final String COLUMN_CATE_NAME ="Cate_Name";
-    public MyDatabaseHelper(Context context)  {
+    private static final String COLUMN_CATE_ID = "Cate_Id";
+    private static final String COLUMN_CATE_NAME = "Cate_Name";
+
+    public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -56,15 +56,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_NOTE_Hour + " TEXT,"
                 + COLUMN_NOTE_Minute + " TEXT,"
                 + COLUMN_NOTE_PASSWORD + " TEXT"
-                +")";
+                + ")";
         // Chạy lệnh tạo bảng.
         sqLiteDatabase.execSQL(script);
         script = "CREATE TABLE " + TABLE_CATEGORY + "("
                 + COLUMN_CATE_ID + " INTEGER PRIMARY KEY,"
                 + COLUMN_CATE_NAME + " TEXT"
-                +")";
+                + ")";
         sqLiteDatabase.execSQL(script);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         Log.i(TAG, "MyDatabaseHelper.onUpgrade ... ");
@@ -81,16 +82,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTECATE_ID, note.getCateID());
-        values.put(COLUMN_NOTE_COLOR, note.getColorTheme()+"");
+        values.put(COLUMN_NOTE_COLOR, note.getColorTheme() + "");
         values.put(COLUMN_NOTE_TITLE, note.getTitle());
         values.put(COLUMN_NOTE_CONTENT, note.getContent());
-        values.put(COLUMN_NOTE_IS_NOTI, note.isNoti()+"");
-        values.put(COLUMN_NOTE_YEAR, note.getYear()+"");
-        values.put(COLUMN_NOTE_MONTH, note.getMonth()+"");
-        values.put(COLUMN_NOTE_Day, note.getDay()+"");
-        values.put(COLUMN_NOTE_Hour, note.getHour()+"");
-        values.put(COLUMN_NOTE_Minute, note.getMinute()+"");
-        values.put(COLUMN_NOTE_PASSWORD, note.getPassword()+"");
+        values.put(COLUMN_NOTE_IS_NOTI, note.isNoti() + "");
+        values.put(COLUMN_NOTE_YEAR, note.getYear() + "");
+        values.put(COLUMN_NOTE_MONTH, note.getMonth() + "");
+        values.put(COLUMN_NOTE_Day, note.getDay() + "");
+        values.put(COLUMN_NOTE_Hour, note.getHour() + "");
+        values.put(COLUMN_NOTE_Minute, note.getMinute() + "");
+        values.put(COLUMN_NOTE_PASSWORD, note.getPassword() + "");
         // Trèn một dòng dữ liệu vào bảng.
         db.insert(TABLE_NOTE, null, values);
 
@@ -106,21 +107,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
         Cursor cursor = db.query(TABLE_NOTE, new String[]
-                        { COLUMN_NOTE_ID,COLUMN_NOTECATE_ID,COLUMN_NOTE_COLOR,COLUMN_NOTE_TITLE,COLUMN_NOTE_CONTENT,COLUMN_NOTE_IS_NOTI,COLUMN_NOTE_YEAR,COLUMN_NOTE_MONTH,
-                                COLUMN_NOTE_Day,COLUMN_NOTE_Hour,COLUMN_NOTE_Minute,COLUMN_NOTE_PASSWORD
+                        {COLUMN_NOTE_ID, COLUMN_NOTECATE_ID, COLUMN_NOTE_COLOR, COLUMN_NOTE_TITLE, COLUMN_NOTE_CONTENT, COLUMN_NOTE_IS_NOTI, COLUMN_NOTE_YEAR, COLUMN_NOTE_MONTH,
+                                COLUMN_NOTE_Day, COLUMN_NOTE_Hour, COLUMN_NOTE_Minute, COLUMN_NOTE_PASSWORD
                         }
 
-                        , COLUMN_NOTE_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                , COLUMN_NOTE_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
 
-        Note note=new Note(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1))
-                ,Integer.parseInt(cursor.getString(2)),cursor.getString(3),cursor.getString(4),Boolean.parseBoolean(cursor.getString(5))
-                ,Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8))
-                ,Integer.parseInt(cursor.getString(9)),Integer.parseInt(cursor.getString(10)),cursor.getString(11));
-
+        Note note = new Note(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1))
+                , Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(4), Boolean.parseBoolean(cursor.getString(5))
+                , Integer.parseInt(cursor.getString(6)), Integer.parseInt(cursor.getString(7)), Integer.parseInt(cursor.getString(8))
+                , Integer.parseInt(cursor.getString(9)), Integer.parseInt(cursor.getString(10)), cursor.getString(11));
 
 
         // return note
@@ -129,7 +129,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public List<Note> getAllNotes() {
-        Log.i(TAG, "MyDatabaseHelper.getAllNotes ... " );
+        Log.i(TAG, "MyDatabaseHelper.getAllNotes ... ");
 
         List<Note> noteList = new ArrayList<Note>();
         // Select All Query
@@ -140,10 +140,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // Duyệt trên con trỏ, và thêm vào danh sách.
         if (cursor.moveToFirst()) {
             do {
-                Note note=new Note(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1))
-                        ,Integer.parseInt(cursor.getString(2)),cursor.getString(3),cursor.getString(4),Boolean.parseBoolean(cursor.getString(5))
-                        ,Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8))
-                        ,Integer.parseInt(cursor.getString(9)),Integer.parseInt(cursor.getString(10)),cursor.getString(11));
+                Note note = new Note(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1))
+                        , Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(4), Boolean.parseBoolean(cursor.getString(5))
+                        , Integer.parseInt(cursor.getString(6)), Integer.parseInt(cursor.getString(7)), Integer.parseInt(cursor.getString(8))
+                        , Integer.parseInt(cursor.getString(9)), Integer.parseInt(cursor.getString(10)), cursor.getString(11));
 
                 // Thêm vào danh sách.
                 noteList.add(note);
@@ -153,22 +153,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // return note list
         return noteList;
     }
+
     public List<Note> getAllNotesByCate(int Cateid) {
-        Log.i(TAG, "MyDatabaseHelper.getAllNotes ... " );
+        Log.i(TAG, "MyDatabaseHelper.getAllNotes ... ");
 
         List<Note> noteList = new ArrayList<Note>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NOTE+ " WHERE "+COLUMN_NOTECATE_ID+"="+Cateid;
+        String selectQuery = "SELECT  * FROM " + TABLE_NOTE + " WHERE " + COLUMN_NOTECATE_ID + "=" + Cateid;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // Duyệt trên con trỏ, và thêm vào danh sách.
         if (cursor.moveToFirst()) {
             do {
-                Note note=new Note(Integer.parseInt(cursor.getString(0)),Integer.parseInt(cursor.getString(1))
-                        ,Integer.parseInt(cursor.getString(2)),cursor.getString(3),cursor.getString(4),Boolean.parseBoolean(cursor.getString(5))
-                        ,Integer.parseInt(cursor.getString(6)),Integer.parseInt(cursor.getString(7)),Integer.parseInt(cursor.getString(8))
-                        ,Integer.parseInt(cursor.getString(9)),Integer.parseInt(cursor.getString(10)),cursor.getString(11));
+                Note note = new Note(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1))
+                        , Integer.parseInt(cursor.getString(2)), cursor.getString(3), cursor.getString(4), Boolean.parseBoolean(cursor.getString(5))
+                        , Integer.parseInt(cursor.getString(6)), Integer.parseInt(cursor.getString(7)), Integer.parseInt(cursor.getString(8))
+                        , Integer.parseInt(cursor.getString(9)), Integer.parseInt(cursor.getString(10)), cursor.getString(11));
 
                 // Thêm vào danh sách.
                 noteList.add(note);
@@ -180,7 +181,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int getNotesCount() {
-        Log.i(TAG, "MyDatabaseHelper.getNotesCount ... " );
+        Log.i(TAG, "MyDatabaseHelper.getNotesCount ... ");
 
         String countQuery = "SELECT  * FROM " + TABLE_NOTE;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -196,22 +197,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public int updateNote(Note note) {
-        Log.i(TAG, "MyDatabaseHelper.updateNote ... "  + note.getTitle());
+        Log.i(TAG, "MyDatabaseHelper.updateNote ... " + note.getTitle());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTECATE_ID, note.getCateID());
-        values.put(COLUMN_NOTE_COLOR, note.getColorTheme()+"");
+        values.put(COLUMN_NOTE_COLOR, note.getColorTheme() + "");
         values.put(COLUMN_NOTE_TITLE, note.getTitle());
         values.put(COLUMN_NOTE_CONTENT, note.getContent());
-        values.put(COLUMN_NOTE_IS_NOTI, note.isNoti()+"");
-        values.put(COLUMN_NOTE_YEAR, note.getYear()+"");
-        values.put(COLUMN_NOTE_MONTH, note.getMonth()+"");
-        values.put(COLUMN_NOTE_Day, note.getDay()+"");
-        values.put(COLUMN_NOTE_Hour, note.getHour()+"");
-        values.put(COLUMN_NOTE_Minute, note.getMinute()+"");
-        values.put(COLUMN_NOTE_PASSWORD, note.getPassword()+"");
+        values.put(COLUMN_NOTE_IS_NOTI, note.isNoti() + "");
+        values.put(COLUMN_NOTE_YEAR, note.getYear() + "");
+        values.put(COLUMN_NOTE_MONTH, note.getMonth() + "");
+        values.put(COLUMN_NOTE_Day, note.getDay() + "");
+        values.put(COLUMN_NOTE_Hour, note.getHour() + "");
+        values.put(COLUMN_NOTE_Minute, note.getMinute() + "");
+        values.put(COLUMN_NOTE_PASSWORD, note.getPassword() + "");
 
 
         // updating row
@@ -220,15 +221,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteNote(Note note) {
-        Log.i(TAG, "MyDatabaseHelper.updateNote ... " + note.getTitle() );
+        Log.i(TAG, "MyDatabaseHelper.updateNote ... " + note.getTitle());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOTE, COLUMN_NOTE_ID + " = ?",
-                new String[] { String.valueOf(note.getId()) });
+                new String[]{String.valueOf(note.getId())});
         db.close();
     }
 
-//category
+    //category
     public void addCategory(Category category) {
         Log.i(TAG, "MyDatabaseHelper.addNote ... " + category.getName());
 
@@ -252,16 +253,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
         Cursor cursor = db.query(TABLE_NOTE, new String[]
-                        { COLUMN_CATE_ID,COLUMN_CATE_NAME
+                        {COLUMN_CATE_ID, COLUMN_CATE_NAME
                         }
 
                 , COLUMN_NOTE_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[]{String.valueOf(id)}, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
 
-        Category c=new Category(Integer.parseInt(cursor.getString(0)),cursor.getString(1));
+        Category c = new Category(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
 
         // return note
         return c;
@@ -269,7 +270,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public List<Category> getAllCate() {
-        Log.i(TAG, "MyDatabaseHelper.getAllNotes ... " );
+        Log.i(TAG, "MyDatabaseHelper.getAllNotes ... ");
 
         List<Category> noteList = new ArrayList<Category>();
         // Select All Query
@@ -280,7 +281,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // Duyệt trên con trỏ, và thêm vào danh sách.
         if (cursor.moveToFirst()) {
             do {
-                Category c=new Category(Integer.parseInt(cursor.getString(0)),cursor.getString(1));
+                Category c = new Category(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
 
                 // Thêm vào danh sách.
                 noteList.add(c);
@@ -290,12 +291,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // return note list
         return noteList;
     }
+
     public void deleteCate(Category note) {
-        Log.i(TAG, "MyDatabaseHelper.updateNote ... " + note.getName() );
+        Log.i(TAG, "MyDatabaseHelper.updateNote ... " + note.getName());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CATEGORY, COLUMN_CATE_ID + " = ?",
-                new String[] { String.valueOf(note.getId()) });
+                new String[]{String.valueOf(note.getId())});
         db.close();
     }
 }
